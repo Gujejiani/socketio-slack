@@ -16,7 +16,7 @@ const expressServer = app.listen(9000);
         // in ws we use send method and in socket.io we use emit event
     //socket.emit('messageFromServer', { data: 'Welcome to the socketio server' });
 
-        socket.emit('welcome to the server baby')
+        socket.emit('welcome', 'welcome to the server baby')
 })
 
 
