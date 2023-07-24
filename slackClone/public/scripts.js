@@ -1,7 +1,12 @@
 
-const userName = prompt('what is your username? ')
-const password = prompt('what is your password? ')
+// const userName = prompt('what is your username? ')
+// const password = prompt('what is your password? ')
 const socket = io('http://localhost:9000')
+
+
+const userName = 'kakha'
+const password = 'j'
+
 
 
 socket.on('connect', ()=>{
