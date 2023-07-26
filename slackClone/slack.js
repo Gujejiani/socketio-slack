@@ -9,8 +9,12 @@ app.use(express.static(__dirname + '/public'));
 
 const expressServer = app.listen(9000);
 
+
+
     const io = socketio(expressServer)
 
+
+    // connection = '/'
     io.on('connection', (socket) => {
         // in ws we use send method and in socket.io we use emit event
     //socket.emit('messageFromServer', { data: 'Welcome to the socketio server' });
@@ -21,12 +25,17 @@ const expressServer = app.listen(9000);
         socket.on('clientConnect', (data)=>{
             console.log(socket.id, ' has connected');
 
+            socket.emit('nsList', namespaces)
         })
 
-        socket.emit('nsList', namespaces)
 })
 
-
+namespaces.forEach(namespace=>{
+   
+    io.of(namespace.endpoint).on('connection', (socket)=>{
+                console.log(socket.id, 'has connected to ', namespace.name)
+    })
+})
 
 
 
