@@ -8,7 +8,7 @@ const mozNs = new Namespace(1, 'Mozilla', 'https://www.mozilla.org/media/img/log
 const linuxNs = new Namespace(2, 'Linux', 'https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png', '/linux' )
 
 
-wikiNs.addRoom(new Room(0, 'New Article', 0))
+wikiNs.addRoom(new Room(0, 'New Article', 0, true))
 wikiNs.addRoom(new Room(1, 'New Editors', 0))
 wikiNs.addRoom(new Room(2, 'New Other', 0))
 
