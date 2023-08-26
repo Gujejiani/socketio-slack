@@ -48,11 +48,43 @@ namespaces.forEach(namespace=>{
     io.of(namespace.endpoint).on('connection', (socket)=>{
                 //console.log(socket.id, 'has connected to ', namespace.name)
 
-                socket.on('joinRoom', roomTitle =>{
-                    console.log('request to join ', data)
+                socket.on('joinRoom', async (roomTitle, ackCallBack) =>{
+                    console.log('request to join ', roomTitle)
+
+                    // leave all rooms (except the own room)
+                    const rooms = socket.rooms;
+                    console.log(rooms)
+                    let i =0
+                    rooms.forEach(room=>{
+                        // we don't want to leave the default room 1
+
+                        if(i !== 0){
+                            socket.leave(room)
+                           
+                        }
+                        i++
+                    })
+
+
+
+
                     // server should join the room
                     // Note room title is coming from client, which is not safe you have to validate it somehow
                     socket.join(roomTitle)
+
+
+                    // fetch the number of sockets in this room
+                    const sockets = await io.of(namespace.endpoint).in(roomTitle).fetchSockets()
+
+                        // console.log(sockets)
+
+                    const socketCount = sockets.length;
+
+                    ackCallBack({
+                        numUsers: socketCount,
+                    })
+                  
+
                 })
     })
 })

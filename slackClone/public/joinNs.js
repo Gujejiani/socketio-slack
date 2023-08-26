@@ -12,13 +12,26 @@ const joinNs =(element, nsData)=>{
     // clear rooms
     roomList.innerHTML = "";
     
+    //  init first room
+    let firstRoom
+
+
     // loop thorough each room and add to dom
     console.log('rooms ', rooms)
-    rooms.forEach(room=>{
+    rooms.forEach((room, i)=>{
+        if(i===0){
+            firstRoom = room.roomTitle
+        }
+
+
         console.log('room', room)
         roomList.innerHTML += `<li namespaceId=${room.namespaceId} class="room" ><span class="fa-solid fa-${room.privateRoom? 'lock': 'globe'}"></span>${room.roomTitle}</li>
         `
     })
+
+    // init join first room
+    console.log('here ', firstRoom, clickedNs.namespaceId)
+    JoinRoom(firstRoom, clickedNs.id)
 
     // add click listener to each room so client can tell server to change room
 
