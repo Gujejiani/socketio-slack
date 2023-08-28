@@ -29,3 +29,4 @@ Before you begin, make sure you have the following installed on your machine:
 this is how it looks like 
 <img width="978" alt="image" src="https://github.com/Gujejiani/socketio-slack/assets/67228459/1616c7fe-6b00-4efb-b5fa-ae6a24e15c0f">
 
+### credits to https://starsgroup.udemy.com/course/socketio-with-websockets-the-details/learn/ for amazing course
