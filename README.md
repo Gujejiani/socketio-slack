@@ -27,4 +27,5 @@ Before you begin, make sure you have the following installed on your machine:
 4. open http://localhost:7000/slack.html
 
 this is how it looks like 
-image.png
+<img width="978" alt="image" src="https://github.com/Gujejiani/socketio-slack/assets/67228459/1616c7fe-6b00-4efb-b5fa-ae6a24e15c0f">
+
