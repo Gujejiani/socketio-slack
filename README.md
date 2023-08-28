@@ -1,4 +1,4 @@
 # TO START APPLICATION RUN "npm start"
 
 
-## open http://localhost:5000/slack.html
+## open http://localhost:7000/slack.html

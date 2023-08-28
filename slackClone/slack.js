@@ -8,7 +8,7 @@ app.use(cors());
 
 app.use(express.static(__dirname + '/public'));
 
-const expressServer = app.listen(5000);
+const expressServer = app.listen(7000);
 
 const io = socketio(expressServer)
 
@@ -29,6 +29,10 @@ app.get('/change-ns', (req, res, next)=>{
 
     // connection = '/'
     io.on('connection', (socket) => {
+        console.log('============')
+        console.log(socket.handshake)
+
+        const userName = socket.handshake.query.userName
         // in ws we use send method and in socket.io we use emit event
     //socket.emit('messageFromServer', { data: 'Welcome to the socketio server' });
 
@@ -48,9 +52,15 @@ namespaces.forEach(namespace=>{
     io.of(namespace.endpoint).on('connection', (socket)=>{
                 //console.log(socket.id, 'has connected to ', namespace.name)
 
-                socket.on('joinRoom', async (roomTitle, ackCallBack) =>{
-                    console.log('request to join ', roomTitle)
+                socket.on('joinRoom', async (roomObj, ackCallBack) =>{
+                    console.log('request to join ', roomObj.roomTitle)
+                    // need to fetch history
+                    console.log(namespaces, roomObj.namespaceId)
+                    const thisNs = namespaces[roomObj.namespaceId]
 
+
+                    const thisRoomObj = thisNs.rooms.find(room=>room.roomTitle === roomObj.roomTitle)
+                    const thisRoomHistory = thisRoomObj.history;
                     // leave all rooms (except the own room)
                     const rooms = socket.rooms;
                     console.log(rooms)
@@ -70,11 +80,11 @@ namespaces.forEach(namespace=>{
 
                     // server should join the room
                     // Note room title is coming from client, which is not safe you have to validate it somehow
-                    socket.join(roomTitle)
+                    socket.join(roomObj.roomTitle)
 
 
                     // fetch the number of sockets in this room
-                    const sockets = await io.of(namespace.endpoint).in(roomTitle).fetchSockets()
+                    const sockets = await io.of(namespace.endpoint).in(roomObj.roomTitle).fetchSockets()
 
                         // console.log(sockets)
 
@@ -82,10 +92,28 @@ namespaces.forEach(namespace=>{
 
                     ackCallBack({
                         numUsers: socketCount,
+                        thisRoomHistory
                     })
                   
 
                 })
+        socket.on('newMessageToRoom', (messageObj)=>{
+            console.log(messageObj)
+            // broadcast to all sockets in this room... this room only
+            // how can we find out which room this socket is in ?
+
+            const rooms = socket.rooms;
+            const currentRoom = [...rooms][1]
+            // send out this message to everyone in the room, including the sender
+            io.of(namespace.endpoint).to(currentRoom).emit('messageToRoom', messageObj)
+
+            // add this message to the room object history
+            const thisNs= namespaces[messageObj.selectedNsId]
+            const thisRoom = thisNs.rooms.find(room=>room.title === messageObj.roomTitle)
+           
+            thisRoom.addMessage(messageObj)
+            console.log('this room ', thisRoom)
+        })
     })
 })
 

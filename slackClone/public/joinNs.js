@@ -6,7 +6,7 @@ const joinNs =(element, nsData)=>{
     const clickedNs = nsData.find((row)=> row.endpoint ===nsEndpoint)
     console.log('clicked', clickedNs)
     const rooms = clickedNs.rooms;
-
+    selectedNsId = clickedNs.id;
     let roomList = document.querySelector('.room-list');
 
     // clear rooms
