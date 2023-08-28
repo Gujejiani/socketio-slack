@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./slackClone/slack.js"
+    "start": "node ./slackClone/slack.js",
+    "start:dev": "nodemon ./slackClone/slack.js"
   },
   "keywords": [],
   "author": "",
